@@ -12,7 +12,7 @@ update = "APIサーバーの設定変更" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
-apis = [r"https://invidious.jing.rocks/",r"https://inv.nadeko.net/",r"https://yt.drgnz.club/",r"https://invidious.nerdvpn.de/",r"https://invidious.privacyredirect.com/",]
+apis = [r"https://invidious.jing.rocks/",r"https://inv.nadeko.net/",r"https://invidious.nerdvpn.de/",r"https://invidious.privacyredirect.com/",]
 version = "1.0"
 adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
 os.system("chmod 777 ./yukiverify")
