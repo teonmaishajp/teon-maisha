@@ -19,7 +19,8 @@ os.system("chmod 777 ./yukiverify")
 # フォーク元:https://github.com/mochidukiyukimi/yuki-youtube-slim-2
 # このyuki:https://github.com/Skype-GitHub/YUKI-GOD
 # フォークした場合hcaptchaのサイトキーを自分で作り直して使用してください
-
+url = requests.get(r'https://raw.githubusercontent.com/mochidukiyukimi/yuki-youtube-instance/main/instance.txt').text.rstrip()
+version = "1.0"
 apichannels = []
 apicomments = []
 [[apichannels.append(i),apicomments.append(i)] for i in apis]
