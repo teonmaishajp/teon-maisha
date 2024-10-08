@@ -7,13 +7,12 @@ import random
 import os
 import subprocess
 from cache import cache
-ver = "2.5.9" # バージョン    
-update = "動画読み込みに使用するAPIサーバーを追加" # アップデート内容
+ver = "2.6.0" # バージョン    
+update = "APIサーバーの設定変更" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
-apis = [r"https://invidious.private.coffee/",r"https://iv.datura.network/",r"https://invidious.jing.rocks/","https://iv.ggtyler.dev/","https://inv.tux.pizza/","https://invidious.privacyredirect.com/","https://inv.nadeko.net/","https://invidious.nerdvpn.de/","https://invidious.privacyredirect.com/","https://inv.nadeko.net/feed/"r"https://iv.datura.network/",r"https://invidious.private.coffee/",r"https://invidious.protokolla.fi/",r"https://invidious.perennialte.ch/",r"https://yt.cdaut.de/",r"https://invidious.materialio.us/",r"https://yewtu.be/",r"https://invidious.fdn.fr/",r"https://inv.tux.pizza/",r"https://invidious.privacyredirect.com/",r"https://invidious.drgns.space/",r"https://vid.puffyan.us",r"https://invidious.jing.rocks/",r"https://youtube.076.ne.jp/",r"https://vid.puffyan.us/",r"https://inv.riverside.rocks/",r"https://invidio.xamh.de/",r"https://y.com.sb/",r"https://invidious.sethforprivacy.com/",r"https://invidious.tiekoetter.com/",r"https://inv.bp.projectsegfau.lt/",r"https://inv.vern.cc/",r"https://invidious.nerdvpn.de/",r"https://inv.privacy.com.de/",r"https://invidious.rhyshl.live/",r"https://invidious.slipfox.xyz/",r"https://invidious.weblibre.org/",r"https://invidious.namazso.eu/",r"https://invidious.jing.rocks"]
-url = requests.get(r'https://raw.githubusercontent.com/mochidukiyukimi/yuki-youtube-instance/main/instance.txt').text.rstrip()
+apis = [r"https://invidious.jing.rocks/",r"https://inv.nadeko.net/",r"https://yt.drgnz.club/",r"https://invidious.nerdvpn.de/",r"https://invidious.privacyredirect.com/",]
 version = "1.0"
 adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
 os.system("chmod 777 ./yukiverify")
