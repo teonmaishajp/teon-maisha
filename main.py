@@ -107,13 +107,13 @@ def get_info(request):
 def get_data(videoid):
     global logs
     t = json.loads(apirequest(r"api/v1/videos/"+ urllib.parse.quote(videoid)))
-    return [{"id":i["videoId"],"title":i["title"],"authorId":i["authorId"],"author":i["author"],"viewCountText":i["viewCountText"]} for i in t["recommendedVideos"]],list(reversed([i["url"] for i in t["formatStreams"]]))[:2],t["descriptionHtml"].replace("\n","<br>"),t["title"],t["authorId"],t["author"],t["authorThumbnails"][-1]["url"]
+    return [{"id":i["videoId"],"title":i["title"],"authorId":i["authorId"],"author":i["author"],"viewCount":i["viewCount"]} for i in t["recommendedVideos"]],list(reversed([i["url"] for i in t["formatStreams"]]))[:2],t["descriptionHtml"].replace("\n","<br>"),t["title"],t["authorId"],t["author"],t["authorThumbnails"][-1]["url"]
 def get_data2(videoid):
     global logs
     response = apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid))
     data = json.loads(response)
     # "viewCountText" を抽出
-    view_count_text = data.get("viewCountText")
+    view_count_text = data.get("viewCount")
     return view_count_text
 
 def get_search(q,page):
