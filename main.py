@@ -7,8 +7,8 @@ import random
 import os
 import subprocess
 from cache import cache
-ver = "2.6.0" # バージョン    
-update = "APIサーバーの設定変更" # アップデート内容
+ver = "2.7.0" # バージョン    
+update = "再生回数などの表示" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
