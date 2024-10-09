@@ -113,7 +113,7 @@ def get_data2(videoid):
     response = apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid))
     data = json.loads(response)
     # "viewCountText" を抽出
-    view_count_text = data.get("viewCountText", None)
+    view_count_text = data.get("viewCountText")
     return view_count_text
 
 def get_search(q,page):
