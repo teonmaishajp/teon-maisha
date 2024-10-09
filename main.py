@@ -110,8 +110,11 @@ def get_data(videoid):
     return [{"id":i["videoId"],"title":i["title"],"authorId":i["authorId"],"author":i["author"],"viewCountText":i["viewCountText"]} for i in t["recommendedVideos"]],list(reversed([i["url"] for i in t["formatStreams"]]))[:2],t["descriptionHtml"].replace("\n","<br>"),t["title"],t["authorId"],t["author"],t["authorThumbnails"][-1]["url"]
 def get_data2(videoid):
     global logs
-    t = json.loads(apirequest(r"api/v1/videos/"+ urllib.parse.quote(videoid)))
-    return [{"viewCountText":i["viewCountText"]} for i in t["recommendedVideos"]],list(reversed([i["url"] for i in t["formatStreams"]]))[:2],t["descriptionHtml"].replace("\n","<br>"),t["title"],t["authorId"],t["author"],t["authorThumbnails"][-1]["url"]
+    response = apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid))
+    data = json.loads(response)
+    # "viewCountText" を抽出
+    view_count_text = data.get("viewCountText", None)
+    return view_count_text
 
 def get_search(q,page):
     global logs
@@ -216,7 +219,7 @@ def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(No
     t = get_data(videoid)
     t2 = get_data2(videoid)
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
-    return template('video.html', {"request": request,"videoid":videoid,"videourls":t[1],"res":t[0],"description":t[2],"videotitle":t[3],"authorid":t[4],"authoricon":t[6],"author":t[5],"viewCountText":t2[0],"proxy":proxy})
+    return template('video.html', {"request": request,"videoid":videoid,"videourls":t[1],"res":t[0],"description":t[2],"videotitle":t[3],"authorid":t[4],"authoricon":t[6],"author":t[5],"viewCountText":t2,"proxy":proxy})
 
 @app.get("/search", response_class=HTMLResponse,)
 def search(q:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
