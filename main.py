@@ -122,12 +122,12 @@ def get_like(videoid):
     # "viewCountText" を抽出
     view_count_text = data.get("likeCount")
     return view_count_text
-def get_notlike(videoid):
+def get_genre(videoid):
     global logs
     response = apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid))
     data = json.loads(response)
     # "viewCountText" を抽出
-    view_count_text = data.get("dislikeCount")
+    view_count_text = data.get("genre")
     return view_count_text
 
 def get_search(q,page):
@@ -233,9 +233,9 @@ def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(No
     t = get_data(videoid)
     t2 = get_data2(videoid)
     like = get_like(videoid)
-    notlike = get_notlike(videoid)
+    genre = get_genre(videoid)
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
-    return template('video.html', {"request": request,"videoid":videoid,"videourls":t[1],"res":t[0],"description":t[2],"videotitle":t[3],"authorid":t[4],"authoricon":t[6],"author":t[5],"viewCountText":t2,"likeCountText":like,"notlikeCountText":notlike,"proxy":proxy})
+    return template('video.html', {"request": request,"videoid":videoid,"videourls":t[1],"res":t[0],"description":t[2],"videotitle":t[3],"authorid":t[4],"authoricon":t[6],"author":t[5],"viewCountText":t2,"likeCountText":like,"genre":genre,"proxy":proxy})
 
 @app.get("/search", response_class=HTMLResponse,)
 def search(q:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
