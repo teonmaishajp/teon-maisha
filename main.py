@@ -323,8 +323,10 @@ def thumbnail(v:str):
 @app.get("/bbs",response_class=HTMLResponse)
 def view_bbs(request: Request,name: Union[str, None] = "",seed:Union[str,None]="",channel:Union[str,None]="main",verify:Union[str,None]="false",yuki: Union[str] = Cookie(None)):
     if lockbbs == "yes":
+        print("bbslock")
         return "<BBSlock>"
     if lockins == "yes":
+        print("inslock")
         return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
@@ -405,6 +407,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not op == "ok":
         return redirect("/")
     lockbbs = "ok"
+    print("bbslock/")
     return redirect("/")
 @app.get("/op-unlockbbs", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
@@ -414,6 +417,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not op == "ok":
         return redirect("/")
     lockbbs = "no"
+    print("bbsunlock/")
     return redirect("/")
 @app.get("/op-unlockins", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
@@ -423,6 +427,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not op == "ok":
         return redirect("/")
     lockins = "no"
+    print("insunlock/")
     return redirect("/")
 @app.get("/op-lockins", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
@@ -432,6 +437,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not op == "ok":
         return redirect("/")
     lockins = "yes"
+    print("inslock/")
     return redirect("/")
 @app.get("/build", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
