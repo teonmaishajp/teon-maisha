@@ -23,9 +23,6 @@ url = requests.get(r'https://raw.githubusercontent.com/mochidukiyukimi/yuki-yout
 version = "1.0"
 apichannels = []
 apicomments = []
-op = ""# OPチェック
-lockbbs = ""# BBSを許可しない場合yes
-lockins = ""# インスタンス停止用
 [[apichannels.append(i),apicomments.append(i)] for i in apis]
 class APItimeoutError(Exception):
     pass
@@ -220,8 +217,6 @@ template = Jinja2Templates(directory='templates').TemplateResponse
 
 @app.get("/", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
@@ -231,8 +226,6 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
 
 @app.get('/watch', response_class=HTMLResponse)
 def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     response.set_cookie(key="yuki", value="True",max_age=7*24*60*60)
@@ -246,8 +239,6 @@ def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(No
 
 @app.get("/search", response_class=HTMLResponse,)
 def search(q:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
@@ -255,8 +246,6 @@ def search(q:str,response: Response,request: Request,page:Union[int,None]=1,yuki
 
 @app.get("/hashtag/{tag}")
 def search(tag:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     return redirect(f"/search?q={tag}")
@@ -264,8 +253,6 @@ def search(tag:str,response: Response,request: Request,page:Union[int,None]=1,yu
 
 @app.get("/channel/{channelid}", response_class=HTMLResponse)
 def channel(channelid:str,response: Response,request: Request,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
@@ -274,8 +261,6 @@ def channel(channelid:str,response: Response,request: Request,yuki: Union[str] =
 
 @app.get("/answer", response_class=HTMLResponse)
 def set_cokie(q:str):
-    if lockins == "yes":
-        return "This service has been suspended."
     t = get_level(q)
     if t > 5:
         return f"level{t}\n推測を推奨する"
@@ -285,8 +270,6 @@ def set_cokie(q:str):
 
 @app.get("/playlist", response_class=HTMLResponse)
 def playlist(list:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
@@ -294,8 +277,6 @@ def playlist(list:str,response: Response,request: Request,page:Union[int,None]=1
 
 @app.get("/info", response_class=HTMLResponse)
 def viewlist(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     global apis,apichannels,apicomments
     if not(check_cokie(yuki)):
         return redirect("/")
@@ -304,30 +285,18 @@ def viewlist(response: Response,request: Request,yuki: Union[str] = Cookie(None)
 
 @app.get("/suggest")
 def suggest(keyword:str):
-    if lockins == "yes":
-        return "This service has been suspended."
     return [i[0] for i in json.loads(requests.get(r"http://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q="+urllib.parse.quote(keyword)).text[19:-1])[1]]
 
 @app.get("/comments")
 def comments(request: Request,v:str):
-    if lockins == "yes":
-        return "This service has been suspended."
     return template("comments.html",{"request": request,"comments":get_comments(v)})
 
 @app.get("/thumbnail")
 def thumbnail(v:str):
-    if lockins == "yes":
-        return "This service has been suspended."
     return Response(content = requests.get(fr"https://img.youtube.com/vi/{v}/0.jpg").content,media_type=r"image/jpeg")
 
 @app.get("/bbs",response_class=HTMLResponse)
 def view_bbs(request: Request,name: Union[str, None] = "",seed:Union[str,None]="",channel:Union[str,None]="main",verify:Union[str,None]="false",yuki: Union[str] = Cookie(None)):
-    if lockbbs == "yes":
-        print("bbslock")
-        return "<BBSlock>"
-    if lockins == "yes":
-        print("inslock")
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     res = HTMLResponse(requests.get(fr"{url}bbs?name={urllib.parse.quote(name)}&seed={urllib.parse.quote(seed)}&channel={urllib.parse.quote(channel)}&verify={urllib.parse.quote(verify)}",cookies={"yuki":"True"}).text)
@@ -339,19 +308,11 @@ def bbsapi_cached(verify,channel):
 
 @app.get("/bbs/api",response_class=HTMLResponse)
 def view_bbs(request: Request,t: str,channel:Union[str,None]="main",verify: Union[str,None] = "false"):
-    if lockbbs == "yes":
-        return "<BBSlock>"
-    if lockins == "yes":
-        return "This service has been suspended."
     print(fr"{url}bbs/api?t={urllib.parse.quote(t)}&verify={urllib.parse.quote(verify)}&channel={urllib.parse.quote(channel)}")
     return bbsapi_cached(verify,channel)
 
 @app.get("/bbs/result")
 def write_bbs(request: Request,name: str = "",message: str = "",seed:Union[str,None] = "",channel:Union[str,None]="main",verify:Union[str,None]="false",yuki: Union[str] = Cookie(None)):
-    if lockbbs == "yes":
-        return "<BBSlock>"
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     t = requests.get(fr"{url}bbs/result?name={urllib.parse.quote(name)}&message={urllib.parse.quote(message)}&seed={urllib.parse.quote(seed)}&channel={urllib.parse.quote(channel)}&verify={urllib.parse.quote(verify)}&info={urllib.parse.quote(get_info(request))}&serververify={get_verifycode()}",cookies={"yuki":"True"}, allow_redirects=False)
@@ -365,18 +326,12 @@ def how_cached():
 
 @app.get("/bbs/how",response_class=PlainTextResponse)
 def view_commonds(request: Request,yuki: Union[str] = Cookie(None)):
-    if lockbbs == "yes":
-        return "<BBSlock>"
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
         return redirect("/")
     return how_cached()
 
 @app.get("/load_instance")
 def home():
-    if lockins == "yes":
-        return "This service has been suspended."
     global url
     url = requests.get(r'https://raw.githubusercontent.com/mochidukiyukimi/yuki-youtube-instance/main/instance.txt').text.rstrip()
 
@@ -384,6 +339,9 @@ def home():
 @app.exception_handler(500)
 def page(request: Request,__):
     return template("APIwait.html",{"request": request},status_code=500)
+@app.exception_handler(404)
+def page(request: Request,__):
+    return redirect("/")
 
 @app.exception_handler(APItimeoutError)
 def APIwait(request: Request,exception: APItimeoutError):
@@ -391,58 +349,15 @@ def APIwait(request: Request,exception: APItimeoutError):
 
 @app.get("/updateinfo", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("apd1.html",{"request": request,"ver":ver,"update":update})
     print(check_cokie(yuki))
     return redirect("/")
 
-@app.get("/op-lockbbs", response_class=HTMLResponse)
-def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if not check_cokie(yuki):
-        return redirect("/")
-    op = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/op.txt').text.rstrip()
-    if not op == "ok":
-        return redirect("/")
-    lockbbs = "ok"
-    print("bbslock/")
-    return redirect("/")
-@app.get("/op-unlockbbs", response_class=HTMLResponse)
-def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if not check_cokie(yuki):
-        return redirect("/")
-    op = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/op.txt').text.rstrip()
-    if not op == "ok":
-        return redirect("/")
-    lockbbs = "no"
-    print("bbsunlock/")
-    return redirect("/")
-@app.get("/op-unlockins", response_class=HTMLResponse)
-def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if not check_cokie(yuki):
-        return redirect("/")
-    op = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/op.txt').text.rstrip()
-    if not op == "ok":
-        return redirect("/")
-    lockins = "no"
-    print("insunlock/")
-    return redirect("/")
-@app.get("/op-lockins", response_class=HTMLResponse)
-def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if not check_cokie(yuki):
-        return redirect("/")
-    op = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/op.txt').text.rstrip()
-    if not op == "ok":
-        return redirect("/")
-    lockins = "yes"
-    print("inslock/")
-    return redirect("/")
+
 @app.get("/build", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("build.html",{"request": request})
@@ -450,8 +365,6 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     return redirect("/")
 @app.get("/qa", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("qanda.html",{"request": request})
@@ -461,22 +374,16 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
 
 @app.get("/hcaptcha", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if (check_cokie(yuki)):
      return redirect("/")
     return template("hcaptcha.html",{"request": request,"token": token})
 @app.get("/word", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if (check_cokie(yuki)):
      return redirect("/")
     return template("word2.html",{"request": request})
 @app.get("/like", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    if lockins == "yes":
-        return "This service has been suspended."
     if not(check_cokie(yuki)):
      return redirect("/")
     return template("okini.html",{"request": request})
