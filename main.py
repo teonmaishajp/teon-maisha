@@ -396,9 +396,9 @@ def get_vtt(videoid: str):
     response = requests.get(url)
     
     if response.status_code == 200:
-        return FastAPIResponse(content=response.content, media_type="text/vtt")
+        return response.content
     else:
-        raise HTTPException(status_code=response.status_code, detail="キャプションの取得に失敗しました")
+        raise "エラー"
 #vtt日本語
 @app.get('/vttja')
 def get_vtt(videoid: str):
@@ -406,6 +406,6 @@ def get_vtt(videoid: str):
     response = requests.get(url)
     
     if response.status_code == 200:
-        return FastAPIResponse(content=response.content, media_type="text/vtt")
+        return response.content
     else:
-        raise HTTPException(status_code=response.status_code, detail="キャプションの取得に失敗しました")
+        raise "エラー"
