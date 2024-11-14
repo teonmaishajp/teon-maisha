@@ -393,19 +393,19 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
 @app.get('/vttjaauto')
 def get_vtt(videoid: str):
     url = f"{apis[0]}/api/v1/captions/{videoid}?label=Japanese+%28auto-generated%29"
-    response = requests.get(url)
+    response = requests.get(url).text.rstrip()
     
     if response.status_code == 200:
-        return response.content
+        return response
     else:
         raise "エラー"
 #vtt日本語
 @app.get('/vttja')
 def get_vtt(videoid: str):
     url = f"{apis[0]}/api/v1/captions/{videoid}?label=Japanese"
-    response = requests.get(url)
+    response = requests.get(url).text.rstrip()
     
     if response.status_code == 200:
-        return response.content
+        return response
     else:
         raise "エラー"
