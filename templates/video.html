@@ -104,6 +104,8 @@ window.onload = () => {
 >
   {% for videourl in videourls %}
   <source src="{{ videourl }}" type="video/mp4">
+  <track kind="subtitles" src="{{invser}}/api/v1/captions/{{ videoid }}?label=Japanese" srclang="ja" label="日本語">
+  <track kind="subtitles" src="{{invser}}/api/v1/captions/{{ videoid }}?label=Japanese+%28auto-generated%29" srclang="ja-aort" label="日本語-自動生成" default>
   {% endfor %}
 </video>
             </div>
