@@ -388,3 +388,24 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
      return redirect("/")
     return template("okini.html",{"request": request})
+
+# vtt日本語自動生成
+@app.get('/vttjaauto')
+def get_vtt(videoid: str):
+    url = f"{apis[0]}/api/v1/captions/{videoid}?label=Japanese+%28auto-generated%29"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        return FastAPIResponse(content=response.content, media_type="text/vtt")
+    else:
+        raise HTTPException(status_code=response.status_code, detail="キャプションの取得に失敗しました")
+#vtt日本語
+@app.get('/vttja')
+def get_vtt(videoid: str):
+    url = f"{apis[0]}/api/v1/captions/{videoid}?label=Japanese"
+    response = requests.get(url)
+    
+    if response.status_code == 200:
+        return FastAPIResponse(content=response.content, media_type="text/vtt")
+    else:
+        raise HTTPException(status_code=response.status_code, detail="キャプションの取得に失敗しました")
