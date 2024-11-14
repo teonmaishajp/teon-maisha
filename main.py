@@ -388,7 +388,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
      return redirect("/")
     return template("okini.html",{"request": request})
-
+"""
 # vtt日本語自動生成
 @app.get('/vttjaauto')
 def get_vtt(videoid: str):
@@ -400,6 +400,7 @@ def get_vtt(videoid: str):
     else:
         raise "エラー"
 #vtt日本語
+
 @app.get('/vttja')
 def get_vtt(videoid: str):
     url = f"{apis[0]}/api/v1/captions/{videoid}?label=Japanese"
@@ -409,3 +410,4 @@ def get_vtt(videoid: str):
         return response
     else:
         raise "エラー"
+"""
