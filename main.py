@@ -7,8 +7,8 @@ import random
 import os
 import subprocess
 from cache import cache
-ver = "2.7.2" # バージョン    
-update = "字幕" # アップデート内容
+ver = "2.7.3" # バージョン    
+update = "掲示板が不安定である問題を解消" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
@@ -21,6 +21,8 @@ os.system("chmod 777 ./yukiverify")
 # このyuki:https://github.com/Skype-GitHub/YUKI-GOD
 # フォークした場合hcaptchaのサイトキーを自分で作り直して使用してください
 url = requests.get(r'https://raw.githubusercontent.com/mochidukiyukimi/yuki-youtube-instance/main/instance.txt').text.rstrip()
+if not url in "https://":
+    url = "https://yukibbs-server.onrender.com/"
 version = "1.0"
 apichannels = []
 apicomments = []
