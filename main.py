@@ -21,8 +21,6 @@ os.system("chmod 777 ./yukiverify")
 # このyuki:https://github.com/Skype-GitHub/YUKI-GOD
 # フォークした場合hcaptchaのサイトキーを自分で作り直して使用してください
 url = requests.get(r'https://raw.githubusercontent.com/mochidukiyukimi/yuki-youtube-instance/main/instance.txt').text.rstrip()
-if not url in "https://":
-    url = "https://yukibbs-server.onrender.com/"
 version = "1.0"
 apichannels = []
 apicomments = []
