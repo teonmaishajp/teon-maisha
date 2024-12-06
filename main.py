@@ -130,7 +130,15 @@ def get_genre(videoid):
     # "viewCountText" を抽出
     view_count_text = data.get("genre")
     return view_count_text
-
+def get_1040(videoid):
+    global apis
+    invser = apis[0]
+    response = requests.get(f'{invser}api/v1/videos/'+ urllib.parse.quote(videoid))  
+    data = response.json() 
+    urls = []
+    for item in data:
+        if item.get("size") == "1920x1080" and item.get("container") == "webm":
+        return item.get("url")
 def get_search(q,page):
     global logs
     t = json.loads(apirequest(fr"api/v1/search?q={urllib.parse.quote(q)}&page={page}&hl=jp"))
@@ -236,8 +244,9 @@ def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(No
     t2 = get_data2(videoid)
     like = get_like(videoid)
     genre = get_genre(videoid)
+    video1040 = get_1040(videoid)
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
-    return template('video.html', {"request": request,"videoid":videoid,"invser":apis[0],"videourls":t[1],"res":t[0],"description":t[2],"videotitle":t[3],"authorid":t[4],"authoricon":t[6],"author":t[5],"viewCountText":t2,"likeCountText":like,"genre":genre,"proxy":proxy})
+    return template('video.html', {"request": request,"videoid":videoid,"invser":apis[0],"videourls":t[1],"res":t[0],"description":t[2],"videotitle":t[3],"authorid":t[4],"authoricon":t[6],"author":t[5],"viewCountText":t2,"likeCountText":like,"genre":genre,"video1040":video1040,"proxy":proxy})
 
 @app.get("/search", response_class=HTMLResponse,)
 def search(q:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
