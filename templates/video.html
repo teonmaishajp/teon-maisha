@@ -103,7 +103,8 @@ window.onload = () => {
   data-setup='{playbackRates: [0.5, 1, 1.5, 2]}'
 >
   {% for videourl in videourls %}
-  <source src="{{ videourl }}" type="video/mp4">
+　<source src="{{ videourl }}" type="video/mp4" type='video/mp4' label='デフォルト' r />
+　<source src="{{video1040}}" type='video/webm' label='1040p(webm)' />
   <track kind="subtitles" src="{{invser}}api/v1/captions/{{ videoid }}?label=Japanese" srclang="ja" label="日本語" default>
 　<track kind="subtitles" src="/vttja?videoid={{ videoid }}" srclang="jagaku" label="日本語(学タブ)">
   <track kind="subtitles" src="{{invser}}api/v1/captions/{{ videoid }}?label=Japanese+%28auto-generated%29" srclang="jaauto" label="日本語-自動生成">
