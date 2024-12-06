@@ -138,7 +138,7 @@ def get_1040(videoid):
     urls = []
     for item in data:
         if item.get("size") == "1920x1080" and item.get("container") == "webm":
-        return item.get("url")
+            return item.get("url")
 def get_search(q,page):
     global logs
     t = json.loads(apirequest(fr"api/v1/search?q={urllib.parse.quote(q)}&page={page}&hl=jp"))
