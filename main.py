@@ -130,15 +130,16 @@ def get_genre(videoid):
     # "viewCountText" を抽出
     view_count_text = data.get("genre")
     return view_count_text
-def get_1040(videoid):
-    global apis
-    invser = apis[0]
-    response = requests.get(f'{invser}api/v1/videos/'+ urllib.parse.quote(videoid))  
-    data = response.json() 
-    urls = []
-    for item in data:
-        if item.get("size") == "1920x1080" and item.get("container") == "webm":
-            return item.get("url")
+def get_1080p(videoid):
+    global logs
+    response = apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid))
+    data = json.loads(response)
+‎
+    for adaptiveFormats in data['adaptiveFormats']:
+        if adaptiveFormats['size'] == '1920x1080' and adaptiveFormats['container'] == 'webm':
+            return adaptiveFormats['url']
+‎
+    return None  # 一致するフォーマットが見つからなかった場合にNoneを返す
 def get_search(q,page):
     global logs
     t = json.loads(apirequest(fr"api/v1/search?q={urllib.parse.quote(q)}&page={page}&hl=jp"))
