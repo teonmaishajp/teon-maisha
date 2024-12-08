@@ -134,11 +134,9 @@ def get_1080p(videoid):
     global logs
     response = apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid))
     data = json.loads(response)
-‎
     for adaptiveFormats in data['adaptiveFormats']:
         if adaptiveFormats['size'] == '1920x1080' and adaptiveFormats['container'] == 'webm':
             return adaptiveFormats['url']
-‎
     return None  # 一致するフォーマットが見つからなかった場合にNoneを返す
 def get_search(q,page):
     global logs
