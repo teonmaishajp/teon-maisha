@@ -130,7 +130,7 @@ def get_genre(videoid):
     # "viewCountText" を抽出
     view_count_text = data.get("genre")
     return view_count_text
-def get_1080p(videoid):
+def get_1040(videoid):
     global logs
     response = apirequest(r"api/v1/videos/" + urllib.parse.quote(videoid))
     data = json.loads(response)
