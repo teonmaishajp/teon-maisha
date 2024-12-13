@@ -7,8 +7,8 @@ import random
 import os
 import subprocess
 from cache import cache
-ver = "2.7.3" # バージョン    
-update = "掲示板が不安定である問題を解消" # アップデート内容
+ver = "2.7.4" # バージョン    
+update = "認証関連の変更、404エラーページの追加" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
@@ -226,12 +226,14 @@ template = Jinja2Templates(directory='templates').TemplateResponse
 
 
 @app.get("/", response_class=HTMLResponse)
-def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
+def home(response: Response,request: Request,yuki: Union[str] = Cookie(None),hca: int = True,):
     adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("home.html",{"request": request,"ver":ver, "adminannounce": adminannounce,})
     print(check_cokie(yuki))
+    if hca == True:
+        return template("hcaptcha.html",{"request": request,"token": token})
     return template("word2.html",{"request": request})
 
 @app.get('/watch', response_class=HTMLResponse)
@@ -376,11 +378,11 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("apd1.html",{"request": request,"ver":ver,"update":update})
     print(check_cokie(yuki))
-    return template("search.html", {"request": request})
+    return template("404.html", {"request": request})
 
 @app.get("/404", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
-    template("404.html", {"request": request})
+    return template("404.html", {"request": request})
 @app.get("/build", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if check_cokie(yuki):
@@ -396,12 +398,13 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     print(check_cokie(yuki))
     template("404.html", {"request": request})
 
-
-@app.get("/hcaptcha", response_class=HTMLResponse)
+"""
+@app.get("/hcapture", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if (check_cokie(yuki)):
      return redirect("/")
     return template("hcaptcha.html",{"request": request,"token": token})
+"""
 """
 @app.get("/word", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
