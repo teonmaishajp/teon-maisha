@@ -226,13 +226,13 @@ template = Jinja2Templates(directory='templates').TemplateResponse
 
 
 @app.get("/", response_class=HTMLResponse)
-def home(response: Response,request: Request,yuki: Union[str] = Cookie(None),hca: int = True,):
+def home(response: Response,request: Request,yuki: Union[str] = Cookie(None),hca: int = 0,):
     adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("home.html",{"request": request,"ver":ver, "adminannounce": adminannounce,})
     print(check_cokie(yuki))
-    if hca == True:
+    if hca == 1:
         return template("hcaptcha.html",{"request": request,"token": token})
     return template("word2.html",{"request": request})
 
