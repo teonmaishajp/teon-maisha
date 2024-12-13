@@ -389,14 +389,14 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("build.html",{"request": request})
     print(check_cokie(yuki))
-    template("404.html", {"request": request})
+    return template("404.html", {"request": request})
 @app.get("/qa", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("qanda.html",{"request": request})
     print(check_cokie(yuki))
-    template("404.html", {"request": request})
+    return template("404.html", {"request": request})
 
 """
 @app.get("/hcapture", response_class=HTMLResponse)
@@ -415,8 +415,9 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
 @app.get("/like", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-     template("404.html", {"request": request})
+     return template("404.html", {"request": request})
     return template("okini.html",{"request": request})
+
 """
 # vtt日本語自動生成
 @app.get('/vttjaauto')
