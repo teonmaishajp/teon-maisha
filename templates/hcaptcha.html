@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>認証ページ</title>
+    <title>Log in</title>
     <script src="https://www.google.com/recaptcha/api.js?hl=ja" async defer></script>
     <script type="text/javascript">
         var onSuccess = function(response) {
@@ -56,11 +56,12 @@
 </head>
 <body>
  <div class="recaptcha-container">
+    <h1>　ログインするため認証して下さい</h1><br>
     <div class="h-captcha" 
      data-sitekey="{{token}}" 
      data-callback="onSuccess" 
      data-lang="ja"></div>
-    <h1>　認証 - hCaptcha</h1><br><a href="/">[ログインをスキップ]</a>
+    <a href="/">[戻る]</a>
  </div>
     <br>
     
