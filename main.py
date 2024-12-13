@@ -238,7 +238,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
 def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
     global apis,apichannels,apicomments
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     response.set_cookie(key="yuki", value="True",max_age=7*24*60*60)
     videoid = v
     t = get_data(videoid)
@@ -254,21 +254,21 @@ def video(v:str,response: Response,request: Request,yuki: Union[str] = Cookie(No
 @app.get("/search", response_class=HTMLResponse,)
 def search(q:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
     return template("search.html", {"request": request,"results":get_search(q,page),"word":q,"next":f"/search?q={q}&page={page + 1}","proxy":proxy})
 
 @app.get("/hashtag/{tag}")
 def search(tag:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("search.html", {"request": request})
     return redirect(f"/search?q={tag}")
 
 
 @app.get("/channel/{channelid}", response_class=HTMLResponse)
 def channel(channelid:str,response: Response,request: Request,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
     t = get_channel(channelid)
     return template("channel.html", {"request": request,"results":t[0],"channelname":t[1]["channelname"],"channelicon":t[1]["channelicon"],"channelprofile":t[1]["channelprofile"],"proxy":proxy})
@@ -285,7 +285,7 @@ def set_cokie(q:str):
 @app.get("/playlist", response_class=HTMLResponse)
 def playlist(list:str,response: Response,request: Request,page:Union[int,None]=1,yuki: Union[str] = Cookie(None),proxy: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
     return template("search.html", {"request": request,"results":get_playlist(list,str(page)),"word":"","next":f"/playlist?list={list}","proxy":proxy})
 
@@ -293,7 +293,7 @@ def playlist(list:str,response: Response,request: Request,page:Union[int,None]=1
 def viewlist(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     global apis,apichannels,apicomments
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
     return template("info.html",{"request": request,"Youtube_API":apis[0],"Channel_API":apichannels[0],"Comments_API":apicomments[0]})
 
@@ -312,7 +312,7 @@ def thumbnail(v:str):
 @app.get("/bbs",response_class=HTMLResponse)
 def view_bbs(request: Request,name: Union[str, None] = "",seed:Union[str,None]="",channel:Union[str,None]="main",verify:Union[str,None]="false",yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     res = HTMLResponse(requests.get(fr"{url}bbs?name={urllib.parse.quote(name)}&seed={urllib.parse.quote(seed)}&channel={urllib.parse.quote(channel)}&verify={urllib.parse.quote(verify)}",cookies={"yuki":"True"}).text)
     return res
 
@@ -328,7 +328,7 @@ def view_bbs(request: Request,t: str,channel:Union[str,None]="main",verify: Unio
 @app.get("/bbs/result")
 def write_bbs(request: Request,name: str = "",message: str = "",seed:Union[str,None] = "",channel:Union[str,None]="main",verify:Union[str,None]="false",yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     t = requests.get(fr"{url}bbs/result?name={urllib.parse.quote(name)}&message={urllib.parse.quote(message)}&seed={urllib.parse.quote(seed)}&channel={urllib.parse.quote(channel)}&verify={urllib.parse.quote(verify)}&info={urllib.parse.quote(get_info(request))}&serververify={get_verifycode()}",cookies={"yuki":"True"}, allow_redirects=False)
     if t.status_code != 307:
         return HTMLResponse(t.text)
@@ -341,7 +341,7 @@ def how_cached():
 @app.get("/bbs/how",response_class=PlainTextResponse)
 def view_commonds(request: Request,yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-        return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+        return template("404.html", {"request": request})
     return how_cached()
 
 @app.get("/load_instance")
@@ -364,7 +364,7 @@ def page(request: Request,__):
     return template("APIwait.html",{"request": request},status_code=500)
 @app.exception_handler(404)
 def page(request: Request,__):
-    return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+    return redirect("/404")
 
 @app.exception_handler(APItimeoutError)
 def APIwait(request: Request,exception: APItimeoutError):
@@ -376,23 +376,25 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("apd1.html",{"request": request,"ver":ver,"update":update})
     print(check_cokie(yuki))
-    return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+    return template("search.html", {"request": request})
 
-
+@app.get("/404", response_class=HTMLResponse)
+def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
+    template("404.html", {"request": request})
 @app.get("/build", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("build.html",{"request": request})
     print(check_cokie(yuki))
-    return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+    template("404.html", {"request": request})
 @app.get("/qa", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if check_cokie(yuki):
         response.set_cookie("yuki","True",max_age=60 * 60 * 24 * 7)
         return template("qanda.html",{"request": request})
     print(check_cokie(yuki))
-    return "<h1>404 エラー</h1><br> 404 エラー:ページが存在しません<br><a href="/">戻る</a>"
+    template("404.html", {"request": request})
 
 
 @app.get("/hcaptcha", response_class=HTMLResponse)
@@ -410,7 +412,7 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
 @app.get("/like", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
-     return redirect("/")
+     template("404.html", {"request": request})
     return template("okini.html",{"request": request})
 """
 # vtt日本語自動生成
