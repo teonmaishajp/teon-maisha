@@ -13,7 +13,7 @@ token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
 # "https://invidious.adminforge.de/",
-apis = [f"https://iv.duti.dev/",f"https://invidious.catspeed.cc/",f"https://youtube.privacyplz.org/",r"https://invidious.jing.rocks/",r"https://inv.nadeko.net/",r"https://invidious.nerdvpn.de/",r"https://invidious.privacyredirect.com/",]
+apis = ["https://invidious.technicalvoid.dev/",f"https://iv.duti.dev/",f"https://invidious.catspeed.cc/",f"https://youtube.privacyplz.org/",r"https://invidious.jing.rocks/",r"https://inv.nadeko.net/",r"https://invidious.nerdvpn.de/",r"https://invidious.privacyredirect.com/",]
 version = "1.0"
 adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
 os.system("chmod 777 ./yukiverify")
@@ -417,7 +417,15 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if not(check_cokie(yuki)):
      return template("404.html", {"request": request})
     return template("okini.html",{"request": request})
-
+"""
+@app.get("/pass", response_class=HTMLResponse)
+def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
+    if pass1 == "yuki":
+        auth = "ok"
+    else:
+        auth = "no"
+    return {"authentication": auth,"cookie":}
+"""# パスワードのところ
 """
 # vtt日本語自動生成
 @app.get('/vttjaauto')
