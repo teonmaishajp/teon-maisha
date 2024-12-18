@@ -7,7 +7,7 @@ import random
 import os
 import subprocess
 from cache import cache
-ver = "2.7.5" # バージョン    
+ver = "2.7.5.1" # バージョン    
 update = "臨時:検索ができない件" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
@@ -146,12 +146,25 @@ def get_search(q,page):
     t = json.loads(apirequest(fr"api/v1/search?q={urllib.parse.quote(q)}&page={page}&hl=jp"))
     def load_search(i):
         if i["type"] == "video":
-            return {"title":i["title"],"id":i["videoId"],"authorId":i["authorId"],"author":i["author"],"length":str(datetime.timedelta(seconds=i["lengthSeconds"])),"published":i["publishedText"],"type":"video"}
+            title = i.get('title', 'er')
+            videoId = i.get('videoId', 'er')
+            authorId = i.get('authorId', 'er')
+            author = i.get('author', 'er')
+            publishedText = i.get('publishedText', 'er')
+            lengthSeconds = i.get('lengthSeconds', 'er')
+            return {"title":title,"id":videoId,"authorId":authorId,"author":author,"length":str(datetime.timedelta(seconds=lengthSeconds)),"published":publishedText,"type":"video"}
         elif i["type"] == "playlist":
-            return {"title":i["title"],"id":i["playlistId"],"thumbnail":i["videos"][0]["videoId"],"count":i["videoCount"],"type":"playlist"}
+            videoCount = i.get('videoCount', 'er')
+            title = i.get('title', 'er')
+            playlistId = i.get('playlistId', 'er')
+            thumbnail = i.get("videos", [{}])[0].get("videoId", "er")
+            return {"title":title,"id":playlistId,"thumbnail":thumbnail,"count":videoCount,"type":"playlist"}
         else:
             if i["authorThumbnails"][-1]["url"].startswith("https"):
-                return {"author":i["author"],"id":i["authorId"],"thumbnail":i["authorThumbnails"][-1]["url"],"type":"channel"}
+                author = i.get('author', 'er')
+                authorId = i.get('authorId', 'er')
+                thumbnail = i.get("videos", [{}])[0].get("videoId", "er")
+                return {"author":author,"id":authorId,"thumbnail":thumbnail,"type":"channel"}
             else:
                 return {"author":i["author"],"id":i["authorId"],"thumbnail":r"https://"+i["authorThumbnails"][-1]["url"],"type":"channel"}
     return [load_search(i) for i in t]
