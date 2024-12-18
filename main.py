@@ -13,7 +13,7 @@ token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
 # "https://invidious.adminforge.de/",
-apis = ['https://inv.nadeko.net/', 'https://inv.zzls.xyz/', 'https://invidious.einfachzocken.eu/', 'https://invidious.nerdvpn.de/', 'https://iv.melmac.space/', 'https://invidious.0011.lt/', 'https://invidious.nietzospannend.nl/', 'https://rust.oskamp.nl/', 'https://youtube.lurkmore.com/', 'https://yt.yoc.ovh/']
+apis = ['https://inv.nadeko.net/', 'https://inv.zzls.xyz/', 'https://invidious.einfachzocken.eu/', 'https://invidious.nerdvpn.de/', 'https://iv.melmac.space/', 'https://invidious.0011.lt/', 'https://rust.oskamp.nl/', 'https://youtube.lurkmore.com/', 'https://yt.yoc.ovh/']
 version = "1.0"
 adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
 os.system("chmod 777 ./yukiverify")
