@@ -159,7 +159,7 @@ def get_search(q,page):
             except Exception:
                 authorId = "er"
             try:
-            　　author = i["author"]
+                author = i["author"]
             except Exception:
                 author = "er"
             try:
