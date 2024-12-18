@@ -7,7 +7,7 @@ import random
 import os
 import subprocess
 from cache import cache
-ver = "2.7.5.1" # バージョン    
+ver = "2.7.5.2" # バージョン    
 update = "臨時:検索ができない件" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
@@ -146,24 +146,54 @@ def get_search(q,page):
     t = json.loads(apirequest(fr"api/v1/search?q={urllib.parse.quote(q)}&page={page}&hl=jp"))
     def load_search(i):
         if i["type"] == "video":
-            title = i.get('title', 'er')
-            videoId = i.get('videoId', 'er')
-            authorId = i.get('authorId', 'er')
-            author = i.get('author', 'er')
-            publishedText = i.get('publishedText', 'er')
-            lengthSeconds = i.get('lengthSeconds', 'er')
+            try:
+                title = i["title"]
+            except Exception:
+                title = "er"
+            try:
+                videoId = i["videoId"]
+            except Exception:
+                videoId = "er"
+            try:
+                authorId = i["authorId"]
+            except Exception:
+                authorId = "er"
+            try:
+            　　author = i["author"]
+            except Exception:
+                author = "er"
+            try:
+            　　publishedText = i["publishedText"]
+            except Exception:
+                publishedText="er"
+            try:
+            　　lengthSeconds = i["lengthSeconds"]
+            except Exception:
+                lengthSeconds = "er"
             return {"title":title,"id":videoId,"authorId":authorId,"author":author,"length":str(datetime.timedelta(seconds=lengthSeconds)),"published":publishedText,"type":"video"}
         elif i["type"] == "playlist":
-            videoCount = i.get('videoCount', 'er')
-            title = i.get('title', 'er')
-            playlistId = i.get('playlistId', 'er')
-            thumbnail = i.get("videos", [{}])[-1].get("videoId", "er")
+            try:
+                videoCount = i["videoCount"]
+            except Exception:
+                videoCount = "er"
+            try:
+            　　title = i["title"]
+            except Exception:
+                title = "er"
+            try:
+            　　playlistId = i["playlistId"]
+            except Exception:
+                playlistId = "er"
+            try:
+            　　thumbnail = i["videos"][0]["videoId"]
+            except Exception:
+                thumbnail = "er"
             return {"title":title,"id":playlistId,"thumbnail":thumbnail,"count":videoCount,"type":"playlist"}
         else:
             if i["authorThumbnails"][-1]["url"].startswith("https"):
-                author = i.get('author', 'er')
-                authorId = i.get('authorId', 'er')
-                thumbnail = i.get("videos", [{}])[-1].get("videoId", "er")
+                author = i["author"]
+                authorId = i["authorId"]
+                thumbnail = i["authorThumbnails"][-1]["url"]
                 return {"author":author,"id":authorId,"thumbnail":thumbnail,"type":"channel"}
             else:
                 return {"author":i["author"],"id":i["authorId"],"thumbnail":r"https://"+i["authorThumbnails"][-1]["url"],"type":"channel"}
