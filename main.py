@@ -7,13 +7,13 @@ import random
 import os
 import subprocess
 from cache import cache
-ver = "2.7.4" # バージョン    
-update = "認証関連の変更、404エラーページの追加" # アップデート内容
+ver = "2.7.5" # バージョン    
+update = "臨時:検索ができない件" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
 max_api_wait_time = 3
 max_time = 10
 # "https://invidious.adminforge.de/",
-apis = ["https://invidious.technicalvoid.dev/",f"https://iv.duti.dev/",f"https://invidious.catspeed.cc/",f"https://youtube.privacyplz.org/",r"https://invidious.jing.rocks/",r"https://inv.nadeko.net/",r"https://invidious.nerdvpn.de/",r"https://invidious.privacyredirect.com/",]
+apis = ['https://inv.nadeko.net/', 'https://inv.zzls.xyz/', 'https://invidious.einfachzocken.eu/', 'https://invidious.nerdvpn.de/', 'https://iv.melmac.space/', 'https://invidious.0011.lt/', 'https://invidious.nietzospannend.nl/', 'https://rust.oskamp.nl/', 'https://youtube.lurkmore.com/', 'https://yt.yoc.ovh/']
 version = "1.0"
 adminannounce = requests.get(r'https://ztttas1.github.io/yuki00000000000000000000000000000/AN.txt').text.rstrip()
 os.system("chmod 777 ./yukiverify")
