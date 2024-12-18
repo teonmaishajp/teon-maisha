@@ -157,13 +157,13 @@ def get_search(q,page):
             videoCount = i.get('videoCount', 'er')
             title = i.get('title', 'er')
             playlistId = i.get('playlistId', 'er')
-            thumbnail = i.get("videos", [{}])[0].get("videoId", "er")
+            thumbnail = i.get("videos", [{}])[-1].get("videoId", "er")
             return {"title":title,"id":playlistId,"thumbnail":thumbnail,"count":videoCount,"type":"playlist"}
         else:
             if i["authorThumbnails"][-1]["url"].startswith("https"):
                 author = i.get('author', 'er')
                 authorId = i.get('authorId', 'er')
-                thumbnail = i.get("videos", [{}])[0].get("videoId", "er")
+                thumbnail = i.get("videos", [{}])[-1].get("videoId", "er")
                 return {"author":author,"id":authorId,"thumbnail":thumbnail,"type":"channel"}
             else:
                 return {"author":i["author"],"id":i["authorId"],"thumbnail":r"https://"+i["authorThumbnails"][-1]["url"],"type":"channel"}
