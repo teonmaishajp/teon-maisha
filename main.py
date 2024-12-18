@@ -10,7 +10,7 @@ from cache import cache
 ver = "2.7.5.3" # バージョン    
 update = "臨時:検索ができない件" # アップデート内容
 token = "e4f5c13f-4f31-4ae1-ac5c-b3f1df232073" # hcaptchaのサイトキー
-max_api_wait_time = 3
+max_api_wait_time = 5
 max_time = 10
 # "https://invidious.adminforge.de/",
 apis = ['https://inv.nadeko.net/', 'https://inv.zzls.xyz/', 'https://invidious.nerdvpn.de/', 'https://iv.melmac.space/','https://youtube.lurkmore.com/',"https://iv.duti.dev/"]
