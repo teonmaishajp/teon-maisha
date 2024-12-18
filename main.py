@@ -167,7 +167,7 @@ def get_search(q,page):
             except Exception:
                 publishedText="er"
             try:
-            　　lengthSeconds = i["lengthSeconds"]
+                lengthSeconds = i["lengthSeconds"]
             except Exception:
                 lengthSeconds = "er"
             return {"title":title,"id":videoId,"authorId":authorId,"author":author,"length":str(datetime.timedelta(seconds=lengthSeconds)),"published":publishedText,"type":"video"}
@@ -177,15 +177,15 @@ def get_search(q,page):
             except Exception:
                 videoCount = "er"
             try:
-            　　title = i["title"]
+                title = i["title"]
             except Exception:
                 title = "er"
             try:
-            　　playlistId = i["playlistId"]
+                playlistId = i["playlistId"]
             except Exception:
                 playlistId = "er"
             try:
-            　　thumbnail = i["videos"][0]["videoId"]
+                thumbnail = i["videos"][0]["videoId"]
             except Exception:
                 thumbnail = "er"
             return {"title":title,"id":playlistId,"thumbnail":thumbnail,"count":videoCount,"type":"playlist"}
