@@ -163,7 +163,7 @@ def get_search(q,page):
             except Exception:
                 author = "er"
             try:
-            　　publishedText = i["publishedText"]
+                publishedText = i["publishedText"]
             except Exception:
                 publishedText="er"
             try:
