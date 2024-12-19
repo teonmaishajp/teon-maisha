@@ -346,14 +346,20 @@ def viewlist(response: Response,request: Request,yuki: Union[str] = Cookie(None)
 
 @app.get("/suggest")
 def suggest(keyword:str):
+    if not(check_cokie(yuki)):
+        return template("404.html", {"request": request})
     return [i[0] for i in json.loads(requests.get(r"http://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q="+urllib.parse.quote(keyword)).text[19:-1])[1]]
 
 @app.get("/comments")
 def comments(request: Request,v:str):
+    if not(check_cokie(yuki)):
+        return template("404.html", {"request": request})
     return template("comments.html",{"request": request,"comments":get_comments(v)})
 
 @app.get("/thumbnail")
 def thumbnail(v:str):
+    if not(check_cokie(yuki)):
+        return template("404.html", {"request": request})
     return Response(content = requests.get(fr"https://img.youtube.com/vi/{v}/0.jpg").content,media_type=r"image/jpeg")
 
 @app.get("/bbs",response_class=HTMLResponse)
@@ -369,6 +375,8 @@ def bbsapi_cached(verify,channel):
 
 @app.get("/bbs/api",response_class=HTMLResponse)
 def view_bbs(request: Request,t: str,channel:Union[str,None]="main",verify: Union[str,None] = "false"):
+    if not(check_cokie(yuki)):
+        return template("404.html", {"request": request})
     print(fr"{url}bbs/api?t={urllib.parse.quote(t)}&verify={urllib.parse.quote(verify)}&channel={urllib.parse.quote(channel)}")
     return bbsapi_cached(verify,channel)
 
@@ -411,7 +419,7 @@ def page(request: Request,__):
     return template("APIwait.html",{"request": request},status_code=500)
 @app.exception_handler(404)
 def page(request: Request,__):
-    return redirect("/404")
+    return template("404.html", {"request": request})
 
 @app.exception_handler(APItimeoutError)
 def APIwait(request: Request,exception: APItimeoutError):
@@ -424,10 +432,11 @@ def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
         return template("apd1.html",{"request": request,"ver":ver,"update":update})
     print(check_cokie(yuki))
     return template("404.html", {"request": request})
-
+"""
 @app.get("/404", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     return template("404.html", {"request": request})
+"""
 @app.get("/build", response_class=HTMLResponse)
 def home(response: Response,request: Request,yuki: Union[str] = Cookie(None)):
     if check_cokie(yuki):
