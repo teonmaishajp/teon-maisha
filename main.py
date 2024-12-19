@@ -346,20 +346,14 @@ def viewlist(response: Response,request: Request,yuki: Union[str] = Cookie(None)
 
 @app.get("/suggest")
 def suggest(keyword:str):
-    if not(check_cokie(yuki)):
-        return template("404.html", {"request": request})
     return [i[0] for i in json.loads(requests.get(r"http://www.google.com/complete/search?client=youtube&hl=ja&ds=yt&q="+urllib.parse.quote(keyword)).text[19:-1])[1]]
 
 @app.get("/comments")
 def comments(request: Request,v:str):
-    if not(check_cokie(yuki)):
-        return template("404.html", {"request": request})
     return template("comments.html",{"request": request,"comments":get_comments(v)})
 
 @app.get("/thumbnail")
 def thumbnail(v:str):
-    if not(check_cokie(yuki)):
-        return template("404.html", {"request": request})
     return Response(content = requests.get(fr"https://img.youtube.com/vi/{v}/0.jpg").content,media_type=r"image/jpeg")
 
 @app.get("/bbs",response_class=HTMLResponse)
@@ -375,15 +369,11 @@ def bbsapi_cached(verify,channel):
 
 @app.get("/bbs/api",response_class=HTMLResponse)
 def view_bbs(request: Request,t: str,channel:Union[str,None]="main",verify: Union[str,None] = "false"):
-    if not(check_cokie(yuki)):
-        return template("404.html", {"request": request})
     print(fr"{url}bbs/api?t={urllib.parse.quote(t)}&verify={urllib.parse.quote(verify)}&channel={urllib.parse.quote(channel)}")
     return bbsapi_cached(verify,channel)
 
 @app.get("/bbs/result")
 def write_bbs(request: Request,name: str = "",message: str = "",seed:Union[str,None] = "",channel:Union[str,None]="main",verify:Union[str,None]="false",yuki: Union[str] = Cookie(None)):
-    if not(check_cokie(yuki)):
-        return template("404.html", {"request": request})
     t = requests.get(fr"{url}bbs/result?name={urllib.parse.quote(name)}&message={urllib.parse.quote(message)}&seed={urllib.parse.quote(seed)}&channel={urllib.parse.quote(channel)}&verify={urllib.parse.quote(verify)}&info={urllib.parse.quote(get_info(request))}&serververify={get_verifycode()}",cookies={"yuki":"True"}, allow_redirects=False)
     if t.status_code != 307:
         return HTMLResponse(t.text)
